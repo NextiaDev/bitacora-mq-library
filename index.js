@@ -36,14 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.bitacorear = void 0;
+exports.registrar = void 0;
 /* eslint-disable multiline-ternary */
 var interfaces_1 = require("./interfaces");
 var registar_bitacora_1 = require("./registar-bitacora");
 var obtenerFechas_1 = require("./utils/obtenerFechas");
 var obtenerHash_1 = require("./utils/obtenerHash");
 var obtener_token_1 = require("./obtener-token");
-var bitacorear = function (type, input) { return __awaiter(void 0, void 0, void 0, function () {
+var registrar = function (type, input) { return __awaiter(void 0, void 0, void 0, function () {
     var token, sesionHash, dates, payload, response, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -108,4 +108,4 @@ var bitacorear = function (type, input) { return __awaiter(void 0, void 0, void 
         }
     });
 }); };
-exports.bitacorear = bitacorear;
+exports.registrar = registrar;

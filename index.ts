@@ -7,7 +7,7 @@ import { obtenerTokenMQ } from './obtener-token';
 
 
 
-export const bitacorear = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
+export const registrar = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
     try {
         // Get Token
         const token = await obtenerTokenMQ({
