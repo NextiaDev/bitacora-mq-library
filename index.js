@@ -44,7 +44,7 @@ var obtenerFechas_1 = require("./utils/obtenerFechas");
 var obtenerHash_1 = require("./utils/obtenerHash");
 var obtener_token_1 = require("./obtener-token");
 var registrar = function (type, input) { return __awaiter(void 0, void 0, void 0, function () {
-    var token, sesionHash, dates, payload, response, error_1;
+    var token, sesionHash, dates, origen, response, payload, bitacoraResponse, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -62,6 +62,11 @@ var registrar = function (type, input) { return __awaiter(void 0, void 0, void 0
                 }
                 sesionHash = (0, obtenerHash_1.obtenerHash)(input.bitacoraBody.nss, input.bitacoraBody.token);
                 dates = (0, obtenerFechas_1.obtenerFechas)(input.bitacoraBody.token);
+                origen = input.bitacoraBody.origen;
+                response = input.bitacoraBody.response;
+                if (!origen || !response) {
+                    throw new Error('El origen y el response son requeridos');
+                }
                 payload = {
                     session: sesionHash,
                     fecha: dates.today.toISOString().slice(0, 10),
@@ -69,11 +74,11 @@ var registrar = function (type, input) { return __awaiter(void 0, void 0, void 0
                     hora_fin: dates.horaFin,
                     canal: 'Z4',
                     kiosco: 'false',
-                    origen: input.bitacoraBody.origen,
+                    origen: origen,
                     sesion_detalle: sesionHash,
                     valor_anterior: input.bitacoraBody.valorAnterior || '',
                     valor_nuevo: input.bitacoraBody.valorNuevo || '',
-                    resultado: input.bitacoraBody.response || {},
+                    resultado: response,
                     geolocalizacion: input.bitacoraBody.geolocalizacion || '',
                     usuario_txt: input.bitacoraBody.nss || '',
                     usuario: input.bitacoraBody.nss || '',
@@ -81,21 +86,22 @@ var registrar = function (type, input) { return __awaiter(void 0, void 0, void 0
                         IP: input.bitacoraBody.IP || '',
                         tipo: 'servicio',
                         accion: interfaces_1.BITACORA_TYPES[type] || 'read',
-                        resultado: input.bitacoraBody.resultado || '',
+                        resultado: response,
                         request: input.bitacoraBody.request || {},
-                        response: input.bitacoraBody.response || {},
+                        response: response,
                         response_code: input.bitacoraBody.responseCode || ''
                     }
                 };
+                console.log({ payload: payload });
                 return [4 /*yield*/, (0, registar_bitacora_1.registrarBitacora)({
                         KeyId: input.bitacoraOptions.keyId,
-                        BearerToken: token,
+                        BearerToken: "Bearer ".concat(token),
                         body: payload,
                         options: input.bitacoraOptions
                     })];
             case 2:
-                response = _a.sent();
-                return [2 /*return*/, response];
+                bitacoraResponse = _a.sent();
+                return [2 /*return*/, bitacoraResponse];
             case 3:
                 error_1 = _a.sent();
                 // Do something,

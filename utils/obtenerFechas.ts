@@ -14,7 +14,7 @@ export const obtenerFechas = (userToken?: string) => {
     second: "2-digit",
     timeZone: "Pacific/Galapagos",
   };
-  if (userToken !== null) {
+  if (userToken) {
     const tokenData = jwtDecode(userToken as string) as any;
     horaInicio = new Date(tokenData.iat * 1000);
     // eslint-disable-next-line no-mixed-operators

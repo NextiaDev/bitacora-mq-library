@@ -5,7 +5,6 @@ export interface IBitacoraMQ {
     nss: string;
     origen: string;
     responseCode: number;
-    resultado: string;
     valorAnterior: string;
     valorNuevo: string;
     geolocalizacion?: string;

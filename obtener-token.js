@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.obtenerTokenMQ = void 0;
 var axios_1 = require("axios");
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = '0';
 var obtenerTokenMQ = function (input) { return __awaiter(void 0, void 0, void 0, function () {
     var data, config, response, error_1;
     var _a;
@@ -66,16 +67,18 @@ var obtenerTokenMQ = function (input) { return __awaiter(void 0, void 0, void 0,
                 return [4 /*yield*/, axios_1["default"].request(config)];
             case 1:
                 response = _b.sent();
-                if (response && ((_a = response === null || response === void 0 ? void 0 : response.headers) === null || _a === void 0 ? void 0 : _a.Authorization)) {
-                    return [2 /*return*/, response.headers.Authorization];
+                if (response && ((_a = response === null || response === void 0 ? void 0 : response.headers) === null || _a === void 0 ? void 0 : _a.authorization)) {
+                    return [2 /*return*/, response.headers.authorization];
                 }
+                console.log({ response: response });
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _b.sent();
+                console.log(error_1);
                 if (error_1.response) {
-                    throw new Error("No se obtuvo el token de autenticaci\u00F3n ".concat(error_1.response.status, " ").concat(error_1.response.statusText));
+                    throw new Error("No se obtuvo el token de autenticaci\u00F3n: ".concat(error_1.response.status, " ").concat(error_1.response.statusText));
                 }
-                throw new Error("No se obtuvo el token de autenticaci\u00F3n ".concat(error_1.message));
+                throw new Error("No se obtuvo el token de autenticaci\u00F3n: ".concat(error_1.message));
             case 3: throw new Error("No se obtuvo el token de autenticación (response sin token)");
         }
     });

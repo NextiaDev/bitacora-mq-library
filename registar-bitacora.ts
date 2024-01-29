@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IBitacoraMQParams, IBitacoraMQResponse } from "./interfaces";
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
 export const registrarBitacora = async (input: IBitacoraMQParams) => {
   try {
@@ -14,6 +15,7 @@ export const registrarBitacora = async (input: IBitacoraMQParams) => {
       },
       data: data,
     };
+    console.log({config});
     const response = await axios.request(config);
     if (response && response.data) {
       return response.data as IBitacoraMQResponse;

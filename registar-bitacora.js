@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.registrarBitacora = void 0;
 var axios_1 = require("axios");
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 var registrarBitacora = function (input) { return __awaiter(void 0, void 0, void 0, function () {
     var data, config, response, error_1;
     return __generator(this, function (_a) {
@@ -55,6 +56,7 @@ var registrarBitacora = function (input) { return __awaiter(void 0, void 0, void
                     },
                     data: data
                 };
+                console.log({ config: config });
                 return [4 /*yield*/, axios_1["default"].request(config)];
             case 1:
                 response = _a.sent();
