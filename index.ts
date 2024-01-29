@@ -21,6 +21,10 @@ export const registrar = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
             throw new Error('No se pudo obtener el token de autenticación');
         }
 
+        if (!input.bitacoraBody.nss) {
+            throw new Error('El NSS es requerido');
+        }
+
         // Get Session Hash
         const sesionHash = obtenerHash(input.bitacoraBody.nss, input.bitacoraBody.token);
 

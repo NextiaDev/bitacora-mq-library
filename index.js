@@ -60,6 +60,9 @@ var registrar = function (type, input) { return __awaiter(void 0, void 0, void 0
                 if (!token) {
                     throw new Error('No se pudo obtener el token de autenticación');
                 }
+                if (!input.bitacoraBody.nss) {
+                    throw new Error('El NSS es requerido');
+                }
                 sesionHash = (0, obtenerHash_1.obtenerHash)(input.bitacoraBody.nss, input.bitacoraBody.token);
                 dates = (0, obtenerFechas_1.obtenerFechas)(input.bitacoraBody.token);
                 origen = input.bitacoraBody.origen;
