@@ -92,7 +92,6 @@ var registrar = function (type, input) { return __awaiter(void 0, void 0, void 0
                         response_code: input.bitacoraBody.responseCode || ''
                     }
                 };
-                console.log({ payload: payload });
                 return [4 /*yield*/, (0, registar_bitacora_1.registrarBitacora)({
                         KeyId: input.bitacoraOptions.keyId,
                         BearerToken: "Bearer ".concat(token),
@@ -108,7 +107,6 @@ var registrar = function (type, input) { return __awaiter(void 0, void 0, void 0
                 if (input.onError) {
                     input.onError(error_1);
                 }
-                console.error(error_1);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }

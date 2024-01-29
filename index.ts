@@ -61,7 +61,6 @@ export const registrar = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
             },
         };
 
-        console.log({ payload });
         
         // Send to MQ
         const bitacoraResponse = await registrarBitacora({
@@ -76,7 +75,6 @@ export const registrar = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
         if (input.onError) {
             input.onError(error);
         }
-        console.error(error);
     }
 };
 

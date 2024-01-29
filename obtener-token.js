@@ -70,11 +70,9 @@ var obtenerTokenMQ = function (input) { return __awaiter(void 0, void 0, void 0,
                 if (response && ((_a = response === null || response === void 0 ? void 0 : response.headers) === null || _a === void 0 ? void 0 : _a.authorization)) {
                     return [2 /*return*/, response.headers.authorization];
                 }
-                console.log({ response: response });
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _b.sent();
-                console.log(error_1);
                 if (error_1.response) {
                     throw new Error("No se obtuvo el token de autenticaci\u00F3n: ".concat(error_1.response.status, " ").concat(error_1.response.statusText));
                 }

@@ -32,9 +32,7 @@ export const obtenerTokenMQ = async (
     if (response && response?.headers?.authorization) {
       return response.headers.authorization;
     }
-    console.log({response});
   } catch (error) {
-    console.log(error);
     if (error.response) {
       throw new Error(
         `No se obtuvo el token de autenticación: ${error.response.status} ${error.response.statusText}`

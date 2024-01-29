@@ -56,7 +56,6 @@ var registrarBitacora = function (input) { return __awaiter(void 0, void 0, void
                     },
                     data: data
                 };
-                console.log({ config: config });
                 return [4 /*yield*/, axios_1["default"].request(config)];
             case 1:
                 response = _a.sent();
