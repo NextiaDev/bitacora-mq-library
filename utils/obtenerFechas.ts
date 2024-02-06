@@ -1,4 +1,4 @@
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 
 export const obtenerFechas = (userToken?: string) => {
   // Get Dates

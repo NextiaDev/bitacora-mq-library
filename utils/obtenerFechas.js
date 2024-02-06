@@ -16,7 +16,7 @@ var obtenerFechas = function (userToken) {
         timeZone: "Pacific/Galapagos"
     };
     if (userToken) {
-        var tokenData = (0, jwt_decode_1.jwtDecode)(userToken);
+        var tokenData = (0, jwt_decode_1["default"])(userToken);
         horaInicio = new Date(tokenData.iat * 1000);
         // eslint-disable-next-line no-mixed-operators
         horaFin = new Date(tokenData.iat * 1000 + tokenData.token_duration * 1000);
