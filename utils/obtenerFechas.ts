@@ -1,6 +1,6 @@
-import jwtDecode from "jwt-decode";
+import { IUserDataToken } from "../interfaces";
 
-export const obtenerFechas = (userToken?: string) => {
+export const obtenerFechas = (tokenData?: IUserDataToken | null) => {
   // Get Dates
   const today = new Date();
 
@@ -14,8 +14,7 @@ export const obtenerFechas = (userToken?: string) => {
     second: "2-digit",
     timeZone: "Pacific/Galapagos",
   };
-  if (userToken) {
-    const tokenData = jwtDecode(userToken as string) as any;
+  if (tokenData) {
     horaInicio = new Date(tokenData.iat * 1000);
     // eslint-disable-next-line no-mixed-operators
     horaFin = new Date(tokenData.iat * 1000 + tokenData.token_duration * 1000);
