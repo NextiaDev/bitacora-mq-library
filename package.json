@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc index.ts",
-    "test": "ts-node example.ts"
+    "test": "ts-node test/example.ts"
   },
   "repository": {
     "type": "git",
