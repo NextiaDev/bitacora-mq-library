@@ -10,7 +10,7 @@ export interface IBitacoraMQ {
     geolocalizacion?: string;
     request?: any;
     response?: any;
-    token?: string;
+    token?: string | null;
   };
   bitacoraOptions: {
     hostname: string;
@@ -105,3 +105,44 @@ export const BITACORA_TYPES = {
   3: "instert",
   4: "delete",
 };
+
+export interface IUserDataToken {
+  given_name: string;
+  nombres: string;
+  apPaterno: string;
+  apMaterno: string;
+  nss: string;
+  telefonoCelular: string;
+  rfc: string;
+  curp: string;
+  email: string;
+  type_of_account: number;
+  account_status: string;
+  moneda: string;
+  tipoTrabajador: string;
+  last_login: string;
+  creditos: { num_credito: string }[];
+  perfilamiento: {
+    "mi-perfil": string[];
+    "mi-ahorro": string[];
+    "mi-tramite-credito": string[];
+    "mi-credito": string[];
+    contactanos: string[];
+    accesorios: string[];
+  };
+  producto: string;
+  regimen: string;
+  situacioncredito: string;
+  marcadecierre: string;
+  estSol: string;
+  numConvoca: string;
+  statusSoc: string;
+  tipoCredito: string;
+  userDesk: string;
+  idPerfil: string;
+  fallecido: boolean;
+  expires_in: string;
+  token_renovations: number;
+  token_duration: number;
+  iat: number;
+}

@@ -1,8 +1,7 @@
 "use strict";
 exports.__esModule = true;
 exports.obtenerFechas = void 0;
-var jwt_decode_1 = require("jwt-decode");
-var obtenerFechas = function (userToken) {
+var obtenerFechas = function (tokenData) {
     // Get Dates
     var today = new Date();
     var horaInicio, horaFin;
@@ -15,8 +14,7 @@ var obtenerFechas = function (userToken) {
         second: "2-digit",
         timeZone: "Pacific/Galapagos"
     };
-    if (userToken) {
-        var tokenData = (0, jwt_decode_1["default"])(userToken);
+    if (tokenData) {
         horaInicio = new Date(tokenData.iat * 1000);
         // eslint-disable-next-line no-mixed-operators
         horaFin = new Date(tokenData.iat * 1000 + tokenData.token_duration * 1000);

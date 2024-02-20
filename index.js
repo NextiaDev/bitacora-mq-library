@@ -43,8 +43,10 @@ var registar_bitacora_1 = require("./registar-bitacora");
 var obtenerFechas_1 = require("./utils/obtenerFechas");
 var obtenerHash_1 = require("./utils/obtenerHash");
 var obtener_token_1 = require("./obtener-token");
+var obtenerDatosToken_1 = require("./utils/obtenerDatosToken");
+var obtenerSesionUsuario_1 = require("./utils/obtenerSesionUsuario");
 var registrar = function (type, input) { return __awaiter(void 0, void 0, void 0, function () {
-    var token, sesionHash, dates, origen, response, payload, bitacoraResponse, error_1;
+    var token, userDataToken, userSession, sessionHash, dates, origen, response, payload, bitacoraResponse, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -58,41 +60,43 @@ var registrar = function (type, input) { return __awaiter(void 0, void 0, void 0
             case 1:
                 token = _a.sent();
                 if (!token) {
-                    throw new Error('No se pudo obtener el token de autenticación');
+                    throw new Error("No se pudo obtener el token de autenticación");
                 }
                 if (!input.bitacoraBody.nss) {
-                    throw new Error('El NSS es requerido');
+                    throw new Error("El NSS es requerido");
                 }
-                sesionHash = (0, obtenerHash_1.obtenerHash)(input.bitacoraBody.nss, input.bitacoraBody.token);
-                dates = (0, obtenerFechas_1.obtenerFechas)(input.bitacoraBody.token);
+                userDataToken = (0, obtenerDatosToken_1.obtenerDatosToken)(input.bitacoraBody.token);
+                userSession = (0, obtenerSesionUsuario_1.obtenerSesionUsuario)(input.bitacoraBody.nss, input.bitacoraBody.token, userDataToken);
+                sessionHash = (0, obtenerHash_1.obtenerHash)(userSession);
+                dates = (0, obtenerFechas_1.obtenerFechas)(userDataToken);
                 origen = input.bitacoraBody.origen;
                 response = input.bitacoraBody.response;
                 if (!origen || !response) {
-                    throw new Error('El origen y el response son requeridos');
+                    throw new Error("El origen y el response son requeridos");
                 }
                 payload = {
-                    session: sesionHash,
+                    session: sessionHash,
                     fecha: dates.today.toISOString().slice(0, 10),
                     hora_inicio: dates.horaInicio,
                     hora_fin: dates.horaFin,
-                    canal: 'Z4',
-                    kiosco: 'false',
+                    canal: "Z4",
+                    kiosco: "false",
                     origen: origen,
-                    sesion_detalle: sesionHash,
-                    valor_anterior: input.bitacoraBody.valorAnterior || '',
-                    valor_nuevo: input.bitacoraBody.valorNuevo || '',
+                    sesion_detalle: sessionHash,
+                    valor_anterior: input.bitacoraBody.valorAnterior || "",
+                    valor_nuevo: input.bitacoraBody.valorNuevo || "",
                     resultado: response,
-                    geolocalizacion: input.bitacoraBody.geolocalizacion || '',
-                    usuario_txt: input.bitacoraBody.nss || '',
-                    usuario: input.bitacoraBody.nss || '',
+                    geolocalizacion: input.bitacoraBody.geolocalizacion || "",
+                    usuario_txt: input.bitacoraBody.nss || "",
+                    usuario: input.bitacoraBody.nss || "",
                     traza: {
-                        IP: input.bitacoraBody.IP || '',
-                        tipo: 'servicio',
-                        accion: interfaces_1.BITACORA_TYPES[type] || 'read',
+                        IP: input.bitacoraBody.IP || "",
+                        tipo: "servicio",
+                        accion: interfaces_1.BITACORA_TYPES[type] || "read",
                         resultado: response,
                         request: input.bitacoraBody.request || {},
                         response: response,
-                        response_code: input.bitacoraBody.responseCode || ''
+                        response_code: input.bitacoraBody.responseCode || ""
                     }
                 };
                 return [4 /*yield*/, (0, registar_bitacora_1.registrarBitacora)({
