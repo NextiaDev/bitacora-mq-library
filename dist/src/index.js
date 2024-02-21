@@ -8,12 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registrar = void 0;
 /* eslint-disable multiline-ternary */
-const axios = require("axios");
-const SHA512 = require("crypto-js/sha512");
-const jwtDecode = require("jwt-decode");
+const axios_1 = __importDefault(require("axios"));
+const crypto_js_1 = require("crypto-js");
+const jwt_decode_1 = __importDefault(require("jwt-decode"));
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 const BITACORA_TYPES = {
     1: "read",
@@ -34,7 +37,7 @@ const registrarBitacora = (input) => __awaiter(void 0, void 0, void 0, function*
             },
             data: data,
         };
-        const response = yield axios.request(config);
+        const response = yield axios_1.default.request(config);
         if (response && response.data) {
             return response.data;
         }
@@ -68,7 +71,7 @@ const obtenerTokenMQ = (input) => __awaiter(void 0, void 0, void 0, function* ()
             data: data,
             timeout: input.options.timeout ? parseInt(input.options.timeout) : 10000,
         };
-        const response = yield axios.request(config);
+        const response = yield axios_1.default.request(config);
         if (response && ((_a = response === null || response === void 0 ? void 0 : response.headers) === null || _a === void 0 ? void 0 : _a.authorization)) {
             return response.headers.authorization;
         }
@@ -95,7 +98,7 @@ const obtenerSesionUsuario = (user, token, userDataToken) => {
 };
 const obtenerHash = (userSession) => {
     // Se agrega marca temporal
-    const sesionHash = SHA512(userSession).toString();
+    const sesionHash = (0, crypto_js_1.SHA512)(userSession).toString();
     if (!sesionHash) {
         throw new Error("No se ha podido generar el hash de la sesion");
     }
@@ -144,7 +147,7 @@ const obtenerDatosToken = (token) => {
         return null;
     }
     // Se transforma el token a un objeto
-    const tokenData = jwtDecode(token);
+    const tokenData = (0, jwt_decode_1.default)(token);
     return tokenData;
 };
 const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* () {
