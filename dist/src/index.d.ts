@@ -40,4 +40,3 @@ interface IBitacoraMQResponse {
 }
 export declare const registrar: (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => Promise<IBitacoraMQResponse | undefined>;
 export default registrar;
-//# sourceMappingURL=index.d.ts.map
