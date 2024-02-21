@@ -384,3 +384,5 @@ export const registrar = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
     }
   }
 };
+
+export default registrar;
