@@ -1,7 +1,7 @@
 /* eslint-disable multiline-ternary */
-import axios, { AxiosRequestConfig } from "axios";
-import { SHA512 } from "crypto-js";
-import jwtDecode from "jwt-decode";
+const axios: any = require("axios");
+const SHA512: any = require("crypto-js/sha512");
+const jwtDecode:any = require("jwt-decode");
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
 // Inputs
@@ -194,7 +194,7 @@ const obtenerTokenMQ = async (input: ITokenMQParams): Promise<string> => {
       contrasena: input.Contrasena,
     });
 
-    const config: AxiosRequestConfig = {
+    const config = {
       method: input.options.method,
       maxBodyLength: Infinity,
       url: `${input.options.protocol}://${input.options.hostname}:${input.options.port}${input.options.path}`,
@@ -297,7 +297,7 @@ const obtenerDatosToken = (token?: string | null): IUserDataToken | null => {
   }
 
   // Se transforma el token a un objeto
-  const tokenData = jwtDecode<IUserDataToken>(token);
+  const tokenData = jwtDecode(token) as IUserDataToken;
   return tokenData;
 };
 
