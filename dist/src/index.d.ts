@@ -39,4 +39,4 @@ interface IBitacoraMQResponse {
     contenido: any;
 }
 export declare const registrar: (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => Promise<IBitacoraMQResponse | undefined>;
-export {};
+export default registrar;

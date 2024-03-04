@@ -150,6 +150,7 @@ interface IUserDataToken {
   expires_in: string;
   token_renovations: number;
   token_duration: number;
+  token_generated_at: string;
   iat: number;
 }
 
@@ -229,12 +230,22 @@ const obtenerSesionUsuario = (
 ): string => {
   // CASE 1: If token is provided, and is MCI login, (A temporary mark is added)
   if (token && userDataToken && !userDataToken.userDesk) {
-    return token;
+    if (!userDataToken.token_generated_at) {
+      throw new Error(
+        "No se ha podido obtener la fecha de generación del token"
+      );
+    }
+    return userDataToken.nss + userDataToken.token_generated_at;
   }
 
   // CASE 2: If token is provided, and is IMPERSONALIZATION login, (It returns the token)
   if (token && userDataToken && userDataToken.userDesk) {
-    return token;
+    if (!userDataToken.token_generated_at) {
+      throw new Error(
+        "No se ha podido obtener la fecha de generación del token"
+      );
+    }
+    return userDataToken.userDesk + userDataToken.token_generated_at;
   }
 
   // CASE 3: When token is not provided, (A temporary mark is added)

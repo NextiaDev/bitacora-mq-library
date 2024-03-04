@@ -87,11 +87,17 @@ const obtenerTokenMQ = (input) => __awaiter(void 0, void 0, void 0, function* ()
 const obtenerSesionUsuario = (user, token, userDataToken) => {
     // CASE 1: If token is provided, and is MCI login, (A temporary mark is added)
     if (token && userDataToken && !userDataToken.userDesk) {
-        return token;
+        if (!userDataToken.token_generated_at) {
+            throw new Error("No se ha podido obtener la fecha de generación del token");
+        }
+        return userDataToken.nss + userDataToken.token_generated_at;
     }
     // CASE 2: If token is provided, and is IMPERSONALIZATION login, (It returns the token)
     if (token && userDataToken && userDataToken.userDesk) {
-        return token;
+        if (!userDataToken.token_generated_at) {
+            throw new Error("No se ha podido obtener la fecha de generación del token");
+        }
+        return userDataToken.userDesk + userDataToken.token_generated_at;
     }
     // CASE 3: When token is not provided, (A temporary mark is added)
     return user + new Date().toISOString();
@@ -221,3 +227,4 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.registrar = registrar;
+exports.default = exports.registrar;
