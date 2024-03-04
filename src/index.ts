@@ -39,6 +39,7 @@ interface IBitacoraMQ {
     usuario: string;
   };
   onError?: (error: Error) => void;
+  onPrintPayload?: (payload: IBitacoraMQParams["body"]) => void;
 }
 
 interface IBitacoraMQParams {
@@ -379,6 +380,8 @@ export const registrar = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
         response_code: input.bitacoraBody.responseCode || "",
       },
     };
+
+    input?.onPrintPayload && input.onPrintPayload(payload);
 
     // Send to MQ
     const bitacoraResponse = await registrarBitacora({

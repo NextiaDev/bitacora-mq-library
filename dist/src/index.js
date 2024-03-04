@@ -210,6 +210,7 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
                 response_code: input.bitacoraBody.responseCode || "",
             },
         };
+        (input === null || input === void 0 ? void 0 : input.onPrintPayload) && input.onPrintPayload(payload);
         // Send to MQ
         const bitacoraResponse = yield registrarBitacora({
             KeyId: input.bitacoraOptions.keyId,
