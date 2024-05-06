@@ -17,6 +17,8 @@ interface IBitacoraMQ {
     request?: any;
     response?: any;
     token?: string | null;
+    service?: string;
+    event?: string;
   };
   bitacoraOptions: {
     hostname: string;
@@ -73,6 +75,8 @@ interface IBitacoraMQParams {
       request: any;
       response: any;
       response_code: number | string;
+      service: string;
+      event: string;
     };
   };
   options: {
@@ -378,6 +382,8 @@ export const registrar = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
         request: input.bitacoraBody.request || {},
         response: response,
         response_code: input.bitacoraBody.responseCode || "",
+        service: input.bitacoraBody.service || "",
+        event: input.bitacoraBody.event || "",
       },
     };
 

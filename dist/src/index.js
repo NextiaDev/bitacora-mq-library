@@ -208,6 +208,8 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
                 request: input.bitacoraBody.request || {},
                 response: response,
                 response_code: input.bitacoraBody.responseCode || "",
+                service: input.bitacoraBody.service || "",
+                event: input.bitacoraBody.event || "",
             },
         };
         (input === null || input === void 0 ? void 0 : input.onPrintPayload) && input.onPrintPayload(payload);
