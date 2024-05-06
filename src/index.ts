@@ -290,12 +290,12 @@ const obtenerFechas = (tokenData?: IUserDataToken | null) => {
     .toLocaleString("en-ZA", options) // Timezone -6 & Turtles Rules!
     .slice(0, 20)
     .replace(",", "")
-    .replace("/", "-");
+    .replace(/\//g, "-");
   const horaFinStr = horaFin
     .toLocaleString("en-ZA", options) // Timezone -6 & Turtles Rules!
     .slice(0, 20)
     .replace(",", "")
-    .replace("/", "-");
+    .replace(/\//g, "-");
   return {
     horaInicio: horaInicioStr,
     horaFin: horaFinStr,
