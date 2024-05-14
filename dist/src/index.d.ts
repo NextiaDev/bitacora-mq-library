@@ -10,8 +10,12 @@ interface IBitacoraMQ {
         request?: any;
         response?: any;
         token?: string | null;
-        service?: string;
-        event?: string;
+        canal?: string;
+        kiosco?: string;
+        idTipo?: string;
+        tipo?: string;
+        idEvento?: string;
+        evento?: string;
     };
     bitacoraOptions: {
         hostname: string;
@@ -61,14 +65,15 @@ interface IBitacoraMQParams {
         usuario: string;
         traza: {
             IP: string;
-            tipo: string;
+            idTipo: string;
+            tipoDesc: string;
+            idEvento: string;
+            eventoDesc: string;
             accion: string;
             resultado: string;
             request: any;
             response: any;
             response_code: number | string;
-            service: string;
-            event: string;
         };
     };
     options: {
@@ -85,5 +90,5 @@ interface IBitacoraMQResponse {
     mensaje: string;
     contenido: any;
 }
-export declare const registrar: (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => Promise<IBitacoraMQResponse | undefined>;
+export declare const registrar: (type: string | number, input: IBitacoraMQ) => Promise<IBitacoraMQResponse | undefined>;
 export default registrar;

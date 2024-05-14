@@ -17,8 +17,12 @@ interface IBitacoraMQ {
     request?: any;
     response?: any;
     token?: string | null;
-    service?: string;
-    event?: string;
+    canal?: string;
+    kiosco?: string;
+    idTipo?: string;
+    tipo?: string;
+    idEvento?: string;
+    evento?: string;
   };
   bitacoraOptions: {
     hostname: string;
@@ -69,14 +73,15 @@ interface IBitacoraMQParams {
     usuario: string;
     traza: {
       IP: string;
-      tipo: string;
+      idTipo: string;
+      tipoDesc: string;
+      idEvento: string;
+      eventoDesc: string;
       accion: string;
       resultado: string;
       request: any;
       response: any;
       response_code: number | string;
-      service: string;
-      event: string;
     };
   };
   options: {
@@ -110,11 +115,11 @@ interface IBitacoraMQResponse {
   contenido: any;
 }
 
-const BITACORA_TYPES = {
-  1: "read",
-  2: "update",
-  3: "instert",
-  4: "delete",
+const BITACORA_TYPES: { [key: number]: string } = {
+  1: "Lectura",
+  2: "Actualización",
+  3: "Creación",
+  4: "Eliminación",
 };
 
 interface IUserDataToken {
@@ -232,7 +237,9 @@ const obtenerSesionUsuario = (
   user: string,
   token?: string | null,
   userDataToken?: IUserDataToken | null
-): string => {
+) => {
+  let userSession = "";
+  let userImpersonalizacion = "";
   // CASE 1: If token is provided, and is MCI login, (A temporary mark is added)
   if (token && userDataToken && !userDataToken.userDesk) {
     if (!userDataToken.token_generated_at) {
@@ -240,21 +247,28 @@ const obtenerSesionUsuario = (
         "No se ha podido obtener la fecha de generación del token"
       );
     }
-    return userDataToken.nss + userDataToken.token_generated_at;
+    userSession = userDataToken.nss + userDataToken.token_generated_at;
   }
 
   // CASE 2: If token is provided, and is IMPERSONALIZATION login, (It returns the token)
-  if (token && userDataToken && userDataToken.userDesk) {
+  else if (token && userDataToken && userDataToken.userDesk) {
     if (!userDataToken.token_generated_at) {
       throw new Error(
         "No se ha podido obtener la fecha de generación del token"
       );
     }
-    return userDataToken.userDesk + userDataToken.token_generated_at;
+    userSession = userDataToken.userDesk + userDataToken.token_generated_at;
+    userImpersonalizacion = userDataToken.userDesk;
   }
 
   // CASE 3: When token is not provided, (A temporary mark is added)
-  return user + new Date().toISOString();
+  else {
+    userSession = user + new Date().toISOString();
+  }
+  return {
+    userSession,
+    userImpersonalizacion,
+  };
 };
 
 const obtenerHash = (userSession: string): string => {
@@ -317,7 +331,12 @@ const obtenerDatosToken = (token?: string | null): IUserDataToken | null => {
   return tokenData;
 };
 
-export const registrar = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
+/*
+ * @param type: 1 | 2 | 3 | 4 (1: Lectura, 2: Actualización, 3: Creación, 4: Eliminación)
+ * @param input: IBitacoraMQ
+ * @returns Promise<IBitacoraMQResponse>
+ */
+export const registrar = async (type: string | number, input: IBitacoraMQ) => {
   try {
     // Get Token
     const token = await obtenerTokenMQ({
@@ -335,11 +354,15 @@ export const registrar = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
       throw new Error("El NSS es requerido");
     }
 
+    if (Number.isNaN(Number(type)) || Number(type) < 1 || Number(type) > 4) {
+      throw new Error("El tipo de bitácora es inválido");
+    }
+
     // Get User Data Token
     const userDataToken = obtenerDatosToken(input.bitacoraBody.token);
 
     // Get User Session Identifier
-    const userSession = obtenerSesionUsuario(
+    const { userSession, userImpersonalizacion } = obtenerSesionUsuario(
       input.bitacoraBody.nss,
       input.bitacoraBody.token,
       userDataToken
@@ -360,30 +383,46 @@ export const registrar = async (type: 1 | 2 | 3 | 4, input: IBitacoraMQ) => {
     }
 
     const payload: IBitacoraMQParams["body"] = {
+      // Identificador unico de la sesion, del usuario en el medio de contacto o canal [ID_SSSN]
       session: sessionHash,
+      // Fecha en que se establece/finaliza la sesion [FH_INCO], [FH_FIN]
       fecha: dates.today.toISOString().slice(0, 10),
+      // Hora inicio en la que se establecio la sesion [HR_INCO]
       hora_inicio: dates.horaInicio,
+      // Hora fin de la sesion establecida [HR_FIN]
       hora_fin: dates.horaFin,
-      canal: "Z4",
-      kiosco: "false",
-      origen: origen,
+      // Canal en el que se establece la sesion de usuario (APP, MIC, etc) [ID_CNAL]
+      canal: input.bitacoraBody.canal || "Z4",
+      // Aplica para cuando el medio de contacto es mediante un Kiosco, como identificador [TX_KSCO]
+      kiosco: input.bitacoraBody.kiosco || "false",
+      // Origen que referencia la IP de donde esta conectandose el cliente [TX_ORGN]
+      origen: input.bitacoraBody.IP,
+      // Contacto o canal. Es llave foranea para el detalle de la sesion [ID_SSSN_DTLE]
       sesion_detalle: sessionHash,
+      // Valor anterior a dicha actualizacion, en un formato JSON [TX_VANT]
       valor_anterior: input.bitacoraBody.valorAnterior || "",
+      // Valor actualizado, en un formato JSON [TX_VNVO]
       valor_nuevo: input.bitacoraBody.valorNuevo || "",
+      // Consulta, Error... etc [TX_RSLO]
       resultado: response,
+      // Geolocalizacion por el cliente, en modo TXT [TX_GLCN]
       geolocalizacion: input.bitacoraBody.geolocalizacion || "",
-      usuario_txt: input.bitacoraBody.nss || "",
+      // Usuario que establece la sesion (Usuario Administrador, Derechohabiente(NSS) [ID_USRO]
       usuario: input.bitacoraBody.nss || "",
+      // Usuario de suplantacion si es que este aplica [TX_USRO]
+      usuario_txt: userImpersonalizacion || "",
+      // Menus de navegacion en el  aplicativo MIC, APP, etc [TX_TRZA]
       traza: {
         IP: input.bitacoraBody.IP || "",
-        tipo: "servicio",
-        accion: BITACORA_TYPES[type] || "read",
-        resultado: response,
+        idTipo: input.bitacoraBody.idTipo || "",
+        tipoDesc: input.bitacoraBody.tipo || "",
+        idEvento: input.bitacoraBody.idEvento || "",
+        eventoDesc: input.bitacoraBody.evento || "",
+        accion: BITACORA_TYPES[Number(type)] || "read",
         request: input.bitacoraBody.request || {},
+        resultado: response,
         response: response,
         response_code: input.bitacoraBody.responseCode || "",
-        service: input.bitacoraBody.service || "",
-        event: input.bitacoraBody.event || "",
       },
     };
 
