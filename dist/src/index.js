@@ -84,7 +84,7 @@ const obtenerTokenMQ = (input) => __awaiter(void 0, void 0, void 0, function* ()
     }
     throw new Error("No se obtuvo el token de autenticación (response sin token)");
 });
-const obtenerSesionUsuario = (user, token, userDataToken) => {
+const obtenerSesionUsuario = (user, token, userDataToken, anonimo) => {
     let userSession = "";
     let userImpersonalizacion = "";
     // CASE 1: If token is provided, and is MCI login, (A temporary mark is added)
@@ -104,7 +104,10 @@ const obtenerSesionUsuario = (user, token, userDataToken) => {
     }
     // CASE 3: When token is not provided, (A temporary mark is added)
     else {
-        userSession = user + new Date().toISOString();
+        if (!anonimo) {
+            throw new Error("No se ha podido obtener el valor de anónimo");
+        }
+        userSession = user + anonimo + new Date().toISOString();
     }
     return {
         userSession,
@@ -191,7 +194,7 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
         // Get User Data Token
         const userDataToken = obtenerDatosToken(input.bitacoraBody.token);
         // Get User Session Identifier
-        const { userSession, userImpersonalizacion } = obtenerSesionUsuario(input.bitacoraBody.nss, input.bitacoraBody.token, userDataToken);
+        const { userSession, userImpersonalizacion } = obtenerSesionUsuario(input.bitacoraBody.nss, input.bitacoraBody.token, userDataToken, input.bitacoraBody.anonimo);
         // Get Session Hash
         const sessionHash = obtenerHash(userSession);
         // Get Dates

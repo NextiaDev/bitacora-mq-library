@@ -17,6 +17,7 @@ interface IBitacoraMQ {
     request?: any;
     response?: any;
     token?: string | null;
+    anonimo?: string;
     canal?: string;
     kiosco?: string;
     idTipo?: string;
@@ -236,7 +237,8 @@ const obtenerTokenMQ = async (input: ITokenMQParams): Promise<string> => {
 const obtenerSesionUsuario = (
   user: string,
   token?: string | null,
-  userDataToken?: IUserDataToken | null
+  userDataToken?: IUserDataToken | null,
+  anonimo?: string
 ) => {
   let userSession = "";
   let userImpersonalizacion = "";
@@ -263,7 +265,10 @@ const obtenerSesionUsuario = (
 
   // CASE 3: When token is not provided, (A temporary mark is added)
   else {
-    userSession = user + new Date().toISOString();
+    if (!anonimo) {
+      throw new Error("No se ha podido obtener el valor de anónimo");
+    }
+    userSession = user + anonimo + new Date().toISOString();
   }
   return {
     userSession,
@@ -365,7 +370,8 @@ export const registrar = async (type: string | number, input: IBitacoraMQ) => {
     const { userSession, userImpersonalizacion } = obtenerSesionUsuario(
       input.bitacoraBody.nss,
       input.bitacoraBody.token,
-      userDataToken
+      userDataToken,
+      input.bitacoraBody.anonimo
     );
 
     // Get Session Hash

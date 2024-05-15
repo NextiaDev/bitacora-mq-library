@@ -10,6 +10,7 @@ interface IBitacoraMQ {
         request?: any;
         response?: any;
         token?: string | null;
+        anonimo?: string;
         canal?: string;
         kiosco?: string;
         idTipo?: string;
