@@ -1,6 +1,6 @@
 {
   "name": "bitacora-mq-library",
-  "version": "1.5.17",
+  "version": "1.5.18",
   "description": "",
   "main": "dist/src/index.js",
   "scripts": {

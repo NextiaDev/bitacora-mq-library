@@ -342,6 +342,7 @@ const obtenerDatosToken = (token?: string | null): IUserDataToken | null => {
  * @returns Promise<IBitacoraMQResponse>
  */
 export const registrar = async (type: string | number, input: IBitacoraMQ) => {
+  let payload: IBitacoraMQParams["body"] | null = null;
   try {
     // Get Token
     const token = await obtenerTokenMQ({
@@ -388,7 +389,7 @@ export const registrar = async (type: string | number, input: IBitacoraMQ) => {
       throw new Error("El origen y el response son requeridos");
     }
 
-    const payload: IBitacoraMQParams["body"] = {
+    payload = {
       // Identificador unico de la sesion, del usuario en el medio de contacto o canal [ID_SSSN]
       session: sessionHash,
       // Fecha en que se establece/finaliza la sesion [FH_INCO], [FH_FIN]
@@ -432,7 +433,9 @@ export const registrar = async (type: string | number, input: IBitacoraMQ) => {
       },
     };
 
-    input?.onPrintPayload && input.onPrintPayload(payload);
+    if(input.onPrintPayload) {
+      input.onPrintPayload(payload);
+    }
 
     // Send to MQ
     const bitacoraResponse = await registrarBitacora({
@@ -441,6 +444,7 @@ export const registrar = async (type: string | number, input: IBitacoraMQ) => {
       body: payload,
       options: input.bitacoraOptions,
     });
+    bitacoraResponse.contenido = payload;
     return bitacoraResponse;
   } catch (error) {
     // Do something,

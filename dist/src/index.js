@@ -174,6 +174,7 @@ const obtenerDatosToken = (token) => {
  * @returns Promise<IBitacoraMQResponse>
  */
 const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* () {
+    let payload = null;
     try {
         // Get Token
         const token = yield obtenerTokenMQ({
@@ -205,7 +206,7 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
         if (!origen || !response) {
             throw new Error("El origen y el response son requeridos");
         }
-        const payload = {
+        payload = {
             // Identificador unico de la sesion, del usuario en el medio de contacto o canal [ID_SSSN]
             session: sessionHash,
             // Fecha en que se establece/finaliza la sesion [FH_INCO], [FH_FIN]
@@ -248,7 +249,9 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
                 response_code: input.bitacoraBody.responseCode || "",
             },
         };
-        (input === null || input === void 0 ? void 0 : input.onPrintPayload) && input.onPrintPayload(payload);
+        if (input.onPrintPayload) {
+            input.onPrintPayload(payload);
+        }
         // Send to MQ
         const bitacoraResponse = yield registrarBitacora({
             KeyId: input.bitacoraOptions.keyId,
@@ -256,6 +259,7 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
             body: payload,
             options: input.bitacoraOptions,
         });
+        bitacoraResponse.contenido = payload;
         return bitacoraResponse;
     }
     catch (error) {
