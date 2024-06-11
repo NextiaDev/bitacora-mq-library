@@ -134,6 +134,7 @@ const obtenerFechas = (tokenData) => {
         minute: "2-digit",
         second: "2-digit",
         timeZone: "Pacific/Galapagos",
+        hour12: true,
     };
     if (tokenData) {
         horaInicio = new Date(tokenData.iat * 1000);
@@ -146,18 +147,24 @@ const obtenerFechas = (tokenData) => {
     }
     const horaInicioStr = horaInicio
         .toLocaleString("en-ZA", options) // Timezone -6 & Turtles Rules!
-        .slice(0, 20)
         .replace(",", "")
-        .replace(/\//g, "-");
+        .toUpperCase();
+    // .replace(/\//g, "-");
     const horaFinStr = horaFin
         .toLocaleString("en-ZA", options) // Timezone -6 & Turtles Rules!
-        .slice(0, 20)
         .replace(",", "")
-        .replace(/\//g, "-");
+        .toUpperCase();
+    // .replace(/\//g, "-");
+    const todayFormatted = today
+        .toLocaleDateString("en-ZA", options)
+        .replace(",", "")
+        .slice(0, 10)
+        .toUpperCase();
     return {
         horaInicio: horaInicioStr,
         horaFin: horaFinStr,
         today,
+        todayFormatted,
     };
 };
 const obtenerDatosToken = (token) => {
@@ -210,7 +217,7 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
             // Identificador unico de la sesion, del usuario en el medio de contacto o canal [ID_SSSN]
             session: sessionHash,
             // Fecha en que se establece/finaliza la sesion [FH_INCO], [FH_FIN]
-            fecha: dates.today.toISOString().slice(0, 10),
+            fecha: dates.todayFormatted,
             // Hora inicio en la que se establecio la sesion [HR_INCO]
             hora_inicio: dates.horaInicio,
             // Hora fin de la sesion establecida [HR_FIN]
