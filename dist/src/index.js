@@ -231,9 +231,9 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
             // Contacto o canal. Es llave foranea para el detalle de la sesion [ID_SSSN_DTLE]
             sesion_detalle: sessionHash,
             // Valor anterior a dicha actualizacion, en un formato JSON [TX_VANT]
-            valor_anterior: input.bitacoraBody.valorAnterior || "",
+            valor_anterior: input.bitacoraBody.valorAnterior || {},
             // Valor actualizado, en un formato JSON [TX_VNVO]
-            valor_nuevo: input.bitacoraBody.valorNuevo || "",
+            valor_nuevo: input.bitacoraBody.valorNuevo || {},
             // Consulta, Error... etc [TX_RSLO]
             resultado: response,
             // Geolocalizacion por el cliente, en modo TXT [TX_GLCN]

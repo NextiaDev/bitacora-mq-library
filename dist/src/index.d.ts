@@ -4,8 +4,12 @@ interface IBitacoraMQ {
         nss: string;
         origen: string;
         responseCode: number;
-        valorAnterior: string;
-        valorNuevo: string;
+        valorAnterior?: {
+            [key: string]: any;
+        };
+        valorNuevo?: {
+            [key: string]: any;
+        };
         geolocalizacion?: string;
         request?: any;
         response?: any;
@@ -53,8 +57,12 @@ interface IBitacoraMQParams {
         kiosco: string;
         origen: string;
         sesion_detalle: string;
-        valor_anterior: string;
-        valor_nuevo: string;
+        valor_anterior: {
+            [key: string]: any;
+        };
+        valor_nuevo: {
+            [key: string]: any;
+        };
         resultado: {
             login: boolean;
             fallecido: boolean;

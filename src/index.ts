@@ -11,8 +11,8 @@ interface IBitacoraMQ {
     nss: string;
     origen: string;
     responseCode: number;
-    valorAnterior: string;
-    valorNuevo: string;
+    valorAnterior?: { [key: string]: any };
+    valorNuevo?: { [key: string]: any };
     geolocalizacion?: string;
     request?: any;
     response?: any;
@@ -61,8 +61,8 @@ interface IBitacoraMQParams {
     kiosco: string;
     origen: string;
     sesion_detalle: string;
-    valor_anterior: string;
-    valor_nuevo: string;
+    valor_anterior: { [key: string]: any };
+    valor_nuevo: { [key: string]: any };
     resultado: {
       login: boolean;
       fallecido: boolean;
@@ -416,9 +416,9 @@ export const registrar = async (type: string | number, input: IBitacoraMQ) => {
       // Contacto o canal. Es llave foranea para el detalle de la sesion [ID_SSSN_DTLE]
       sesion_detalle: sessionHash,
       // Valor anterior a dicha actualizacion, en un formato JSON [TX_VANT]
-      valor_anterior: input.bitacoraBody.valorAnterior || "",
+      valor_anterior: input.bitacoraBody.valorAnterior || {},
       // Valor actualizado, en un formato JSON [TX_VNVO]
-      valor_nuevo: input.bitacoraBody.valorNuevo || "",
+      valor_nuevo: input.bitacoraBody.valorNuevo || {},
       // Consulta, Error... etc [TX_RSLO]
       resultado: response,
       // Geolocalizacion por el cliente, en modo TXT [TX_GLCN]
