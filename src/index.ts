@@ -299,7 +299,7 @@ const obtenerFechas = (tokenData?: IUserDataToken | null) => {
     minute: "2-digit",
     second: "2-digit",
     timeZone: "Pacific/Galapagos",
-    hour12: true,
+    
   };
   if (tokenData) {
     horaInicio = new Date(tokenData.iat * 1000);
@@ -311,7 +311,7 @@ const obtenerFechas = (tokenData?: IUserDataToken | null) => {
   }
 
   const horaInicioStr = horaInicio
-    .toLocaleString("en-ZA", options) // Timezone -6 & Turtles Rules!
+    .toLocaleString("en-MX", options) // Timezone -6 & Turtles Rules!
     .replace(",", "")
     .toUpperCase();
   // .replace(/\//g, "-");
