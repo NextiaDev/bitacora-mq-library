@@ -126,14 +126,18 @@ const obtenerFechas = (tokenData) => {
     // Get Dates
     const today = new Date();
     let horaInicio, horaFin;
-    const options = {
+    const optionsDate = {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
+        timeZone: "America/Mexico_City",
+    };
+    const optionsTime = {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
-        timeZone: "Pacific/Galapagos",
+        hour12: true,
+        timeZone: "America/Mexico_City",
     };
     if (tokenData) {
         horaInicio = new Date(tokenData.iat * 1000);
@@ -144,21 +148,25 @@ const obtenerFechas = (tokenData) => {
         horaInicio = today;
         horaFin = today;
     }
-    const horaInicioStr = horaInicio
-        .toLocaleString("en-MX", options) // Timezone -6 & Turtles Rules!
-        .replace(",", "")
-        .toUpperCase();
-    // .replace(/\//g, "-");
-    const horaFinStr = horaFin
-        .toLocaleString("en-ZA", options) // Timezone -6 & Turtles Rules!
-        .replace(",", "")
-        .toUpperCase();
-    // .replace(/\//g, "-");
-    const todayFormatted = today
-        .toLocaleDateString("en-ZA", options)
-        .replace(",", "")
-        .slice(0, 10)
-        .toUpperCase();
+    const formatDate = (date) => {
+        const [month, day, year] = date
+            .toLocaleDateString("en-MX", optionsDate)
+            .split("/");
+        const time = date
+            .toLocaleTimeString("en-MX", optionsTime)
+            .replace(",", "")
+            .toUpperCase();
+        return `${year}-${month}-${day} ${time}`;
+    };
+    const formatDateOnly = (date) => {
+        const [month, day, year] = date
+            .toLocaleDateString("en-MX", optionsDate)
+            .split("/");
+        return `${year}-${month}-${day}`;
+    };
+    const horaInicioStr = formatDate(horaInicio);
+    const horaFinStr = formatDate(horaFin);
+    const todayFormatted = formatDateOnly(today);
     return {
         horaInicio: horaInicioStr,
         horaFin: horaFinStr,
