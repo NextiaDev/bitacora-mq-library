@@ -24,6 +24,8 @@ interface IBitacoraMQ {
     tipo?: string;
     idEvento?: string;
     evento?: string;
+    fechaInicio?: Date;
+    fechaFin?: Date;
   };
   bitacoraOptions: {
     hostname: string;
@@ -286,16 +288,21 @@ const obtenerHash = (userSession: string): string => {
   return sesionHash;
 };
 
-const obtenerFechas = (tokenData?: IUserDataToken | null) => {
+const obtenerFechas = (
+  tokenData?: IUserDataToken | null,
+  fechaInicio?: Date,
+  fechaFin?: Date
+) => {
   // Get Dates
   const today = new Date();
+  let horaInicio = today;
+  let horaFin = today;
 
-  let horaInicio, horaFin;
   const optionsDate: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-    timeZone: "America/Mexico_City",
+    timeZone: "Pacific/Galapagos",
   };
 
   const optionsTime: Intl.DateTimeFormatOptions = {
@@ -303,16 +310,26 @@ const obtenerFechas = (tokenData?: IUserDataToken | null) => {
     minute: "2-digit",
     second: "2-digit",
     hour12: true,
-    timeZone: "America/Mexico_City",
+    timeZone: "Pacific/Galapagos",
   };
 
-  if (tokenData) {
-    horaInicio = new Date(tokenData.iat * 1000);
-    // eslint-disable-next-line no-mixed-operators
-    horaFin = new Date(tokenData.iat * 1000 + tokenData.token_duration * 1000);
-  } else {
-    horaInicio = today;
-    horaFin = today;
+  // horaInicio = new Date(tokenData.iat * 1000);
+  // // eslint-disable-next-line no-mixed-operators
+  // horaFin = new Date(tokenData.iat * 1000 + tokenData.token_duration * 1000);
+  if (fechaInicio) {
+    horaInicio = new Date(fechaInicio);
+  }
+
+  if (fechaFin) {
+    horaFin = new Date(fechaFin);
+  }
+
+  if (!horaInicio || !horaFin) {
+    throw new Error("No se ha podido obtener la fecha de inicio o fin");
+  }
+
+  if (horaInicio > horaFin) {
+    throw new Error("La fecha de inicio es mayor a la fecha de fin");
   }
 
   const formatDate = (date: Date) => {

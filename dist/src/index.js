@@ -122,31 +122,38 @@ const obtenerHash = (userSession) => {
     }
     return sesionHash;
 };
-const obtenerFechas = (tokenData) => {
+const obtenerFechas = (tokenData, fechaInicio, fechaFin) => {
     // Get Dates
     const today = new Date();
-    let horaInicio, horaFin;
+    let horaInicio = today;
+    let horaFin = today;
     const optionsDate = {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
-        timeZone: "America/Mexico_City",
+        timeZone: "Pacific/Galapagos",
     };
     const optionsTime = {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
         hour12: true,
-        timeZone: "America/Mexico_City",
+        timeZone: "Pacific/Galapagos",
     };
-    if (tokenData) {
-        horaInicio = new Date(tokenData.iat * 1000);
-        // eslint-disable-next-line no-mixed-operators
-        horaFin = new Date(tokenData.iat * 1000 + tokenData.token_duration * 1000);
+    // horaInicio = new Date(tokenData.iat * 1000);
+    // // eslint-disable-next-line no-mixed-operators
+    // horaFin = new Date(tokenData.iat * 1000 + tokenData.token_duration * 1000);
+    if (fechaInicio) {
+        horaInicio = new Date(fechaInicio);
     }
-    else {
-        horaInicio = today;
-        horaFin = today;
+    if (fechaFin) {
+        horaFin = new Date(fechaFin);
+    }
+    if (!horaInicio || !horaFin) {
+        throw new Error("No se ha podido obtener la fecha de inicio o fin");
+    }
+    if (horaInicio > horaFin) {
+        throw new Error("La fecha de inicio es mayor a la fecha de fin");
     }
     const formatDate = (date) => {
         const [month, day, year] = date

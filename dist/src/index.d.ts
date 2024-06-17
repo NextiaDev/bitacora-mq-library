@@ -21,6 +21,8 @@ interface IBitacoraMQ {
         tipo?: string;
         idEvento?: string;
         evento?: string;
+        fechaInicio?: Date;
+        fechaFin?: Date;
     };
     bitacoraOptions: {
         hostname: string;
