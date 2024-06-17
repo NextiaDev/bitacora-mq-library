@@ -252,15 +252,15 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
             // Menus de navegacion en el  aplicativo MIC, APP, etc [TX_TRZA]
             traza: {
                 IP: input.bitacoraBody.IP || "",
-                idTipo: input.bitacoraBody.idTipo || "",
-                tipoDesc: input.bitacoraBody.tipo || "",
-                idEvento: input.bitacoraBody.idEvento || "",
-                eventoDesc: input.bitacoraBody.evento || "",
-                accion: BITACORA_TYPES[Number(type)] || "read",
+                accion: BITACORA_TYPES[Number(type)] || BITACORA_TYPES[1],
                 request: input.bitacoraBody.request || {},
                 resultado: response,
                 response: response,
-                response_code: input.bitacoraBody.responseCode || "",
+                response_code: input.bitacoraBody.responseCode || "200",
+                idTipo: input.bitacoraBody.idTipo || undefined,
+                tipoDesc: input.bitacoraBody.tipo || undefined,
+                idEvento: input.bitacoraBody.idEvento || undefined,
+                eventoDesc: input.bitacoraBody.evento || undefined,
             },
         };
         if (input.onPrintPayload) {

@@ -74,15 +74,15 @@ interface IBitacoraMQParams {
         usuario: string;
         traza: {
             IP: string;
-            idTipo: string;
-            tipoDesc: string;
-            idEvento: string;
-            eventoDesc: string;
             accion: string;
             resultado: string;
             request: any;
             response: any;
             response_code: number | string;
+            idTipo?: string;
+            tipoDesc?: string;
+            idEvento?: string;
+            eventoDesc?: string;
         };
     };
     options: {

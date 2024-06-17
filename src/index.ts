@@ -74,15 +74,15 @@ interface IBitacoraMQParams {
     usuario: string;
     traza: {
       IP: string;
-      idTipo: string;
-      tipoDesc: string;
-      idEvento: string;
-      eventoDesc: string;
       accion: string;
       resultado: string;
       request: any;
       response: any;
       response_code: number | string;
+      idTipo?: string;
+      tipoDesc?: string;
+      idEvento?: string;
+      eventoDesc?: string;
     };
   };
   options: {
@@ -440,15 +440,15 @@ export const registrar = async (type: string | number, input: IBitacoraMQ) => {
       // Menus de navegacion en el  aplicativo MIC, APP, etc [TX_TRZA]
       traza: {
         IP: input.bitacoraBody.IP || "",
-        idTipo: input.bitacoraBody.idTipo || "",
-        tipoDesc: input.bitacoraBody.tipo || "",
-        idEvento: input.bitacoraBody.idEvento || "",
-        eventoDesc: input.bitacoraBody.evento || "",
-        accion: BITACORA_TYPES[Number(type)] || "read",
+        accion: BITACORA_TYPES[Number(type)] || BITACORA_TYPES[1], // Default: Lectura
         request: input.bitacoraBody.request || {},
         resultado: response,
         response: response,
-        response_code: input.bitacoraBody.responseCode || "",
+        response_code: input.bitacoraBody.responseCode || "200",
+        idTipo: input.bitacoraBody.idTipo || undefined,
+        tipoDesc: input.bitacoraBody.tipo || undefined,
+        idEvento: input.bitacoraBody.idEvento || undefined,
+        eventoDesc: input.bitacoraBody.evento || undefined,
       },
     };
 
