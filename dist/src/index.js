@@ -195,6 +195,7 @@ const obtenerDatosToken = (token) => {
  * @returns Promise<IBitacoraMQResponse>
  */
 const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b, _c;
     let payload = null;
     try {
         // Get Token
@@ -220,7 +221,7 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
         // Get Session Hash
         const sessionHash = obtenerHash(userSession);
         // Get Dates
-        const dates = obtenerFechas(userDataToken);
+        const dates = obtenerFechas(userDataToken, (_b = input.bitacoraBody) === null || _b === void 0 ? void 0 : _b.fechaInicio, (_c = input.bitacoraBody) === null || _c === void 0 ? void 0 : _c.fechaFin);
         // Get Payload
         const origen = input.bitacoraBody.origen;
         const response = input.bitacoraBody.response;

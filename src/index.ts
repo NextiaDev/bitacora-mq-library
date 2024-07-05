@@ -415,7 +415,11 @@ export const registrar = async (type: string | number, input: IBitacoraMQ) => {
     const sessionHash = obtenerHash(userSession);
 
     // Get Dates
-    const dates = obtenerFechas(userDataToken);
+    const dates = obtenerFechas(
+      userDataToken,
+      input.bitacoraBody?.fechaInicio,
+      input.bitacoraBody?.fechaFin
+    );
 
     // Get Payload
     const origen = input.bitacoraBody.origen;
