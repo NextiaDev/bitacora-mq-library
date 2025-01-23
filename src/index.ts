@@ -28,7 +28,8 @@ interface IBitacoraMQ {
     fechaFin?: Date;
     errorCatalogo?: string;
     errorCatalogoDesc?: string;
-    errorServicio?: string;
+    servicio?: string;
+    servicioResponse?: string;
   };
   bitacoraOptions: {
     hostname: string;
@@ -90,7 +91,8 @@ interface IBitacoraMQParams {
       eventoDesc?: string;
       errorCatalogo?: string;
       errorCatalogoDesc?: string;
-      errorServicio?: string;
+      servicio?: string;
+      servicioResponse?: string;
     };
   };
   options: {
@@ -469,16 +471,17 @@ export const registrar = async (type: string | number, input: IBitacoraMQ) => {
         IP: input.bitacoraBody.IP || "",
         accion: BITACORA_TYPES[Number(type)] || BITACORA_TYPES[1], // Default: Lectura
         request: input.bitacoraBody.request || {},
-        resultado: response,
-        response: response,
+        resultado: response || {},
+        response: response || {},
         response_code: input.bitacoraBody.responseCode || "200",
-        idTipo: input.bitacoraBody.idTipo || undefined,
-        tipoDesc: input.bitacoraBody.tipo || undefined,
-        idEvento: input.bitacoraBody.idEvento || undefined,
-        eventoDesc: input.bitacoraBody.evento || undefined,
-        errorCatalogo: input.bitacoraBody.errorCatalogo || undefined,
-        errorCatalogoDesc: input.bitacoraBody.errorCatalogoDesc || undefined,
-        errorServicio: input.bitacoraBody.errorServicio || undefined,
+        idTipo: input.bitacoraBody.idTipo || "",
+        tipoDesc: input.bitacoraBody.tipo || "",
+        idEvento: input.bitacoraBody.idEvento || "",
+        eventoDesc: input.bitacoraBody.evento || "",
+        errorCatalogo: input.bitacoraBody.errorCatalogo || "",
+        errorCatalogoDesc: input.bitacoraBody.errorCatalogoDesc || "",
+        servicio: input.bitacoraBody.servicio || "",
+        servicioResponse: input.bitacoraBody.servicioResponse || "",
       },
     };
 

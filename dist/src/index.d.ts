@@ -25,7 +25,8 @@ interface IBitacoraMQ {
         fechaFin?: Date;
         errorCatalogo?: string;
         errorCatalogoDesc?: string;
-        errorServicio?: string;
+        servicio?: string;
+        servicioResponse?: string;
     };
     bitacoraOptions: {
         hostname: string;
@@ -90,7 +91,8 @@ interface IBitacoraMQParams {
             eventoDesc?: string;
             errorCatalogo?: string;
             errorCatalogoDesc?: string;
-            errorServicio?: string;
+            servicio?: string;
+            servicioResponse?: string;
         };
     };
     options: {
