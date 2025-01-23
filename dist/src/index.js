@@ -269,6 +269,9 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
                 tipoDesc: input.bitacoraBody.tipo || undefined,
                 idEvento: input.bitacoraBody.idEvento || undefined,
                 eventoDesc: input.bitacoraBody.evento || undefined,
+                errorCatalogo: input.bitacoraBody.errorCatalogo || undefined,
+                errorCatalogoDesc: input.bitacoraBody.errorCatalogoDesc || undefined,
+                errorServicio: input.bitacoraBody.errorServicio || undefined,
             },
         };
         if (input.onPrintPayload) {

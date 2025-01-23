@@ -26,6 +26,9 @@ interface IBitacoraMQ {
     evento?: string;
     fechaInicio?: Date;
     fechaFin?: Date;
+    errorCatalogo?: string;
+    errorCatalogoDesc?: string;
+    errorServicio?: string;
   };
   bitacoraOptions: {
     hostname: string;
@@ -85,6 +88,9 @@ interface IBitacoraMQParams {
       tipoDesc?: string;
       idEvento?: string;
       eventoDesc?: string;
+      errorCatalogo?: string;
+      errorCatalogoDesc?: string;
+      errorServicio?: string;
     };
   };
   options: {
@@ -470,6 +476,9 @@ export const registrar = async (type: string | number, input: IBitacoraMQ) => {
         tipoDesc: input.bitacoraBody.tipo || undefined,
         idEvento: input.bitacoraBody.idEvento || undefined,
         eventoDesc: input.bitacoraBody.evento || undefined,
+        errorCatalogo: input.bitacoraBody.errorCatalogo || undefined,
+        errorCatalogoDesc: input.bitacoraBody.errorCatalogoDesc || undefined,
+        errorServicio: input.bitacoraBody.errorServicio || undefined,
       },
     };
 
