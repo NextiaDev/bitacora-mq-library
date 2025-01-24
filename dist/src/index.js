@@ -273,6 +273,7 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
                 errorCatalogoDesc: input.bitacoraBody.errorCatalogoDesc || "",
                 servicio: input.bitacoraBody.servicio || "",
                 servicioResponse: input.bitacoraBody.servicioResponse || "",
+                servicios: input.bitacoraBody.servicios || [],
             },
         };
         if (input.onPrintPayload) {

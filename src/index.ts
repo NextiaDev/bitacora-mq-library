@@ -30,6 +30,7 @@ interface IBitacoraMQ {
     errorCatalogoDesc?: string;
     servicio?: string;
     servicioResponse?: string;
+    servicios?: string[];
   };
   bitacoraOptions: {
     hostname: string;
@@ -93,6 +94,7 @@ interface IBitacoraMQParams {
       errorCatalogoDesc?: string;
       servicio?: string;
       servicioResponse?: string;
+      servicios?: string[];
     };
   };
   options: {
@@ -482,6 +484,7 @@ export const registrar = async (type: string | number, input: IBitacoraMQ) => {
         errorCatalogoDesc: input.bitacoraBody.errorCatalogoDesc || "",
         servicio: input.bitacoraBody.servicio || "",
         servicioResponse: input.bitacoraBody.servicioResponse || "",
+        servicios: input.bitacoraBody.servicios || [],
       },
     };
 

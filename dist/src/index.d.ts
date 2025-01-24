@@ -27,6 +27,7 @@ interface IBitacoraMQ {
         errorCatalogoDesc?: string;
         servicio?: string;
         servicioResponse?: string;
+        servicios?: string[];
     };
     bitacoraOptions: {
         hostname: string;
@@ -93,6 +94,7 @@ interface IBitacoraMQParams {
             errorCatalogoDesc?: string;
             servicio?: string;
             servicioResponse?: string;
+            servicios?: string[];
         };
     };
     options: {
