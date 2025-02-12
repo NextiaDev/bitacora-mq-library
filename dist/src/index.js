@@ -17,6 +17,7 @@ exports.registrar = void 0;
 const axios_1 = __importDefault(require("axios"));
 const crypto_js_1 = require("crypto-js");
 const jwt_decode_1 = __importDefault(require("jwt-decode"));
+const date_fns_tz_1 = require("date-fns-tz");
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 const BITACORA_TYPES = {
     1: "Lectura",
@@ -155,21 +156,17 @@ const obtenerFechas = (tokenData, fechaInicio, fechaFin) => {
     if (horaInicio > horaFin) {
         throw new Error("La fecha de inicio es mayor a la fecha de fin");
     }
+    // 2025-02-12 13:22:55
     const formatDate = (date) => {
-        const [month, day, year] = date
-            .toLocaleDateString("en-MX", optionsDate)
-            .split("/");
-        const time = date
-            .toLocaleTimeString("en-MX", optionsTime)
-            .replace(",", "")
-            .toUpperCase();
-        return `${year}-${month}-${day} ${time}`;
+        return (0, date_fns_tz_1.format)(date, "yyyy-MM-dd HH:mm:ss", {
+            timeZone: "America/Mexico_City",
+        });
     };
+    // 2025-02-12
     const formatDateOnly = (date) => {
-        const [month, day, year] = date
-            .toLocaleDateString("en-MX", optionsDate)
-            .split("/");
-        return `${year}-${month}-${day}`;
+        return (0, date_fns_tz_1.format)(date, "yyyy-MM-dd", {
+            timeZone: "America/Mexico_City",
+        });
     };
     const horaInicioStr = formatDate(horaInicio);
     const horaFinStr = formatDate(horaFin);

@@ -8,8 +8,8 @@ const exampleToCopy = async () => {
       nss: "1234567890", // IE: "1234567890"
       origen: "MCI",
       responseCode: 200,
-      valorAnterior: "",
-      valorNuevo: "",
+      valorAnterior: {},
+      valorNuevo: {},
       geolocalizacion: "",
       request: "",
       response: {

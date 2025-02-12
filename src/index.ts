@@ -2,6 +2,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { SHA512 } from "crypto-js";
 import jwtDecode from "jwt-decode";
+import { format } from "date-fns-tz";
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
 // Inputs
@@ -342,22 +343,18 @@ const obtenerFechas = (
     throw new Error("La fecha de inicio es mayor a la fecha de fin");
   }
 
+  // 2025-02-12 13:22:55
   const formatDate = (date: Date) => {
-    const [month, day, year] = date
-      .toLocaleDateString("en-MX", optionsDate)
-      .split("/");
-    const time = date
-      .toLocaleTimeString("en-MX", optionsTime)
-      .replace(",", "")
-      .toUpperCase();
-    return `${year}-${month}-${day} ${time}`;
+    return format(date, "yyyy-MM-dd HH:mm:ss", {
+      timeZone: "America/Mexico_City",
+    });
   };
 
+  // 2025-02-12
   const formatDateOnly = (date: Date) => {
-    const [month, day, year] = date
-      .toLocaleDateString("en-MX", optionsDate)
-      .split("/");
-    return `${year}-${month}-${day}`;
+    return format(date, "yyyy-MM-dd", {
+      timeZone: "America/Mexico_City",
+    });
   };
 
   const horaInicioStr = formatDate(horaInicio);
