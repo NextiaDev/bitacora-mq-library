@@ -34,7 +34,6 @@ const registrarBitacora = (input) => __awaiter(void 0, void 0, void 0, function*
             headers: {
                 "Content-Type": "application/json",
                 KeyId: input.KeyId,
-                Authorization: input.BearerToken,
             },
             data: data,
         };
@@ -50,40 +49,6 @@ const registrarBitacora = (input) => __awaiter(void 0, void 0, void 0, function*
         throw new Error(`No se pudo registrar en bitácora ${error.message}`);
     }
     throw new Error("No se pudo registrar en bitácora (response sin data)");
-});
-const obtenerTokenMQ = (input) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    try {
-        if (!input.KeyId) {
-            throw new Error("No se encontró el KeyId en los headers (obtenerTokenMQ)");
-        }
-        const data = JSON.stringify({
-            usuario: input.Usuario,
-            contrasena: input.Contrasena,
-        });
-        const config = {
-            method: input.options.method,
-            maxBodyLength: Infinity,
-            url: `${input.options.protocol}://${input.options.hostname}:${input.options.port}${input.options.path}`,
-            headers: {
-                KeyId: input.KeyId,
-                "Content-Type": "application/json",
-            },
-            data: data,
-            timeout: input.options.timeout ? parseInt(input.options.timeout) : 10000,
-        };
-        const response = yield axios_1.default.request(config);
-        if (response && ((_a = response === null || response === void 0 ? void 0 : response.headers) === null || _a === void 0 ? void 0 : _a.authorization)) {
-            return response.headers.authorization;
-        }
-    }
-    catch (error) {
-        if (error.response) {
-            throw new Error(`No se obtuvo el token de autenticación: ${error.response.status} ${error.response.statusText}`);
-        }
-        throw new Error(`No se obtuvo el token de autenticación: ${error.message}`);
-    }
-    throw new Error("No se obtuvo el token de autenticación (response sin token)");
 });
 const obtenerSesionUsuario = (user, token, userDataToken, anonimo) => {
     let userSession = "";
@@ -192,19 +157,9 @@ const obtenerDatosToken = (token) => {
  * @returns Promise<IBitacoraMQResponse>
  */
 const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b, _c;
+    var _a, _b;
     let payload = null;
     try {
-        // Get Token
-        const token = yield obtenerTokenMQ({
-            KeyId: input.tokenOptions.keyId,
-            Usuario: input.tokenOptions.usuario,
-            Contrasena: input.tokenOptions.contrasena,
-            options: input.tokenOptions,
-        });
-        if (!token) {
-            throw new Error("No se pudo obtener el token de autenticación");
-        }
         if (!input.bitacoraBody.nss) {
             throw new Error("El NSS es requerido");
         }
@@ -218,7 +173,7 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
         // Get Session Hash
         const sessionHash = obtenerHash(userSession);
         // Get Dates
-        const dates = obtenerFechas(userDataToken, (_b = input.bitacoraBody) === null || _b === void 0 ? void 0 : _b.fechaInicio, (_c = input.bitacoraBody) === null || _c === void 0 ? void 0 : _c.fechaFin);
+        const dates = obtenerFechas(userDataToken, (_a = input.bitacoraBody) === null || _a === void 0 ? void 0 : _a.fechaInicio, (_b = input.bitacoraBody) === null || _b === void 0 ? void 0 : _b.fechaFin);
         // Get Payload
         const origen = input.bitacoraBody.origen;
         const response = input.bitacoraBody.response;
@@ -279,7 +234,6 @@ const registrar = (type, input) => __awaiter(void 0, void 0, void 0, function* (
         // Send to MQ
         const bitacoraResponse = yield registrarBitacora({
             KeyId: input.bitacoraOptions.keyId,
-            BearerToken: `Bearer ${token}`,
             body: payload,
             options: input.bitacoraOptions,
         });

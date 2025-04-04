@@ -38,23 +38,11 @@ interface IBitacoraMQ {
         protocol: string;
         timeout: string;
     };
-    tokenOptions: {
-        contrasena: string;
-        hostname: string;
-        keyId: string;
-        method: string;
-        path: string;
-        port: string;
-        protocol: string;
-        timeout: string;
-        usuario: string;
-    };
     onError?: (error: Error) => void;
     onPrintPayload?: (payload: IBitacoraMQParams["body"]) => void;
 }
 interface IBitacoraMQParams {
     KeyId: string;
-    BearerToken: string;
     body: {
         session: string;
         fecha: string;
