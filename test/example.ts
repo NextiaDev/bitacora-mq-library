@@ -16,26 +16,16 @@ const exampleToCopy = async () => {
         prueba: true,
       },
       token: null,
+      anonimo: 'MCI'
     },
     bitacoraOptions: {
-      method: "",
+      method: "POST",
       protocol: "https",
-      hostname: "",
-      port: "",
-      path: "",
+      hostname: "091402AQ249.infonavit.net",
+      port: "8065",
+      path: "/mcibitacora/bitacora/registro",
       timeout: "7000",
       keyId: "",
-    },
-    tokenOptions: {
-      method: "",
-      protocol: "https",
-      hostname: "",
-      port: "",
-      path: "",
-      timeout: "7000",
-      keyId: "",
-      usuario: "",
-      contrasena: "",
     },
     onError: (error) => {
       console.log(error);
