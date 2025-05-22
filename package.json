@@ -1,8 +1,8 @@
 {
-  "name": "bitacora-mq-library",
-  "version": "2.1.0",
+  "name": "bitacora-mci",
+  "version": "3.0.0",
   "description": "",
-  "main": "dist/src/index.js",
+  "main": "bundle/src/index.js",
   "scripts": {
     "test": "ts-node test/example.ts",
     "build": "tsc --declaration"
